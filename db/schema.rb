@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_09_232923) do
+ActiveRecord::Schema.define(version: 2019_06_24_200633) do
 
   create_table "admins", force: :cascade do |t|
     t.string "name", null: false
@@ -94,6 +94,8 @@ ActiveRecord::Schema.define(version: 2019_06_09_232923) do
     t.string "remember_token", limit: 100
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean "email_confirmed", default: false
+    t.string "confirm_token"
     t.index ["username"], name: "professors_username_unique", unique: true
   end
 

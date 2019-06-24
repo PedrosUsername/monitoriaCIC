@@ -3,7 +3,11 @@ Rails.application.routes.draw do
   root to: "home#index"
 
   resources :users
-  resources :professors
+  resources :professors do
+    member do
+      get :confirm_email
+    end
+  end
   resources :sessions
   resources :admins
   resources :dados_bancarios

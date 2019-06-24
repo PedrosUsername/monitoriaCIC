@@ -1,5 +1,6 @@
 class Professor < ActiveRecord::Base
   has_secure_password
+  before_create :confirmation_token
 
   self.primary_key = :id
 
@@ -25,4 +26,19 @@ class Professor < ActiveRecord::Base
   # Verificação da senha e confirmação de senha
   validates :password, length: { in: 6..12, message: "must be between 6 and 12 characters" }, on: :create
   validates :password_confirmation, length: { in: 6..12, message: "must be between 6 and 12 characters" }, on: :create
+
+  # Usado pela funcionalidade "Email de verificação"
+  def email_activate
+    self.email_confirmed = true
+    self.confirm_token = nil
+    save!(:validate => false)
+  end
+
+  # Usado pela funcionalidade "Email de verificação"
+  private
+  def confirmation_token
+    if self.confirm_token.blank?
+        self.confirm_token = SecureRandom.urlsafe_base64.to_s
+    end
+  end
 end

@@ -24,6 +24,18 @@ class ProfessorsController < ApplicationController
     ProfessorMailer.with(professor: @professor).key_email.deliver_now
   end
 
+  def confirm_email
+    professor = Professor.find_by_confirm_token(params[:id])
+    if professor
+      professor.email_activate
+      flash[:success] = "Bem vindo! E-mail confirmado."
+      redirect_to new_session_url
+    else
+      flash[:error] = "Erro. Professor inexistente"
+      redirect_to root_url
+    end
+  end
+
   def update
     @professor = Professor.find_by_email(session[:user_id])
     @professor.update_attributes(professor_params)
